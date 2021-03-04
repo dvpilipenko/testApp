@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import aituBridge from '@btsd/aitu-bridge';
 import {
   IonApp,
@@ -37,6 +37,7 @@ const App: React.FC = () => {
     initialSlide: 0,
     speed: 400,
   }
+  const slider = useRef<HTMLIonSlidesElement>(null)
 
   async function getMe() {
     try {
@@ -57,13 +58,14 @@ const App: React.FC = () => {
   const [name, setName] = useState('<username>');
 
   const handleButtonClick = () => {
+    slider.current?.slideNext();
     console.log('nextSlide');
   }
 
   return (
     <IonApp>
       <IonContent>
-        <IonSlides pager={true} options={slideOpts}>
+        <IonSlides pager={true} options={slideOpts} ref={slider} >
           <IonSlide>
             <img src="/assets/slide1.png" />
             <div className="slide-block">
