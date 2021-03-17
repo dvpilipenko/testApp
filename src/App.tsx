@@ -6,8 +6,13 @@ import {
   IonSlide,
   IonContent,
   IonButton,
+  IonAlert,
   IonText,
-  IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonCardContent,
 } from "@ionic/react";
 
 import "./App.css";
@@ -50,9 +55,9 @@ const SlideContent: React.FC<ISlideContentProps> = ({
     <>
       <IonCard>
         <IonCardHeader>
-          <img src={imgSrc}/>
-          <IonCardTitle >{title}</IonCardTitle>
-          <br/>
+          <img src={imgSrc} />
+          <IonCardTitle>{title}</IonCardTitle>
+          <br />
           <IonCardSubtitle>{description}</IonCardSubtitle>
         </IonCardHeader>
         <IonCardContent>
@@ -72,64 +77,70 @@ const App: React.FC = () => {
   };
   const slider = useRef<HTMLIonSlidesElement>(null);
 
-  async function getMe() {
-    try {
-      const data = await aituBridge.getMe();
-      setName(data.name);
-    } catch (e) {
-      // handle error
-      console.log(e);
+  async function getGeo() {
+    if (aituBridge.isSupported()) {
+      try {
+        const data = await aituBridge.getGeo();
+        setGeoPosition(data);
+        setShowPopupPosition(true);
+      } catch (e) {
+        console.log(e);
+      }
     }
   }
 
-  useEffect(() => {
-    if (aituBridge.isSupported()) {
-      getMe();
-    }
-  }, []);
+  useEffect(() => {}, []);
 
-  const [name, setName] = useState("<username>");
+  const [showPopupPosition, setShowPopupPosition] = useState(false);
+  const [geoPosition, setGeoPosition] = useState<{
+    latitude: number;
+    longitude: number;
+  }>({ latitude: 0, longitude: 0 });
 
   const handleButtonClick = () => {
     slider.current?.slideNext();
-    console.log(slider.current)
+    console.log(slider.current);
   };
 
   return (
     <IonApp>
       <IonContent>
+        <IonAlert
+          isOpen={showPopupPosition}
+          onDidDismiss={() => setShowPopupPosition(false)}
+          header={"Ваше метоположение"}
+          message={`Долгота: ${geoPosition.longitude}, ширина: ${geoPosition.longitude}`}
+          buttons={["Ясно"]}
+        />
+
         <IonSlides pager={true} options={slideOpts} ref={slider}>
           <IonSlide>
             <SlideContent
-              title={`Привет, ${name},Не надо вводить адрес`}
-              onClick={handleButtonClick}
-              description={
-                "Нужно всего лишь предоставить доступ к геолокации"
-              }
+              title={`Не надо вводить адрес`}
+              onClick={() => {
+                getGeo();
+              }}
+              description={"Нужно всего лишь предоставить доступ к геолокации"}
               buttonTitle={"предоставить"}
               imgSrc={"/assets/locations.svg"}
             ></SlideContent>
           </IonSlide>
           <IonSlide>
             <SlideContent
-                title={"Не надо регистрироваться"}
-                onClick={handleButtonClick}
-                description={
-                  "Нужно всего лишь предоставить доступ к номеру"
-                }
-                buttonTitle={"предоставить"}
-                imgSrc={"/assets/person.svg"}
+              title={"Не надо регистрироваться"}
+              onClick={handleButtonClick}
+              description={"Нужно всего лишь предоставить доступ к номеру"}
+              buttonTitle={"предоставить"}
+              imgSrc={"/assets/person.svg"}
             ></SlideContent>
           </IonSlide>
           <IonSlide>
             <SlideContent
-                title={"Делитесь с друзьями"}
-                onClick={handleButtonClick}
-                description={
-                  "Для тех кто любит делиться"
-                }
-                buttonTitle={"поделиться"}
-                imgSrc={"/assets/share.svg"}
+              title={"Делитесь с друзьями"}
+              onClick={handleButtonClick}
+              description={"Для тех кто любит делиться"}
+              buttonTitle={"поделиться"}
+              imgSrc={"/assets/share.svg"}
             ></SlideContent>
           </IonSlide>
         </IonSlides>
