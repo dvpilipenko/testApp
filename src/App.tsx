@@ -89,13 +89,27 @@ const App: React.FC = () => {
     }
   }
 
+  async function getPhone() {
+    if (aituBridge.isSupported()) {
+      try {
+        const data = await aituBridge.getPhone();
+        setPhone(data);
+        setShowPopupPhone(true);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
   useEffect(() => {}, []);
 
   const [showPopupPosition, setShowPopupPosition] = useState(false);
+  const [showPopupPhone, setShowPopupPhone] = useState(false);
   const [geoPosition, setGeoPosition] = useState<{
     latitude: number;
     longitude: number;
   }>({ latitude: 0, longitude: 0 });
+  const [phone, setPhone] = useState<{ phone: string }>({ phone: "" });
 
   const handleButtonClick = () => {
     slider.current?.slideNext();
@@ -112,14 +126,19 @@ const App: React.FC = () => {
           message={`Долгота: ${geoPosition.longitude}, ширина: ${geoPosition.longitude}`}
           buttons={["Ясно"]}
         />
+        <IonAlert
+          isOpen={showPopupPhone}
+          onDidDismiss={() => setShowPopupPhone(false)}
+          header={"Ваше телефон"}
+          message={phone.phone}
+          buttons={["Ясно"]}
+        />
 
         <IonSlides pager={true} options={slideOpts} ref={slider}>
           <IonSlide>
             <SlideContent
               title={`Не надо вводить адрес`}
-              onClick={() => {
-                getGeo();
-              }}
+              onClick={getGeo}
               description={"Нужно всего лишь предоставить доступ к геолокации"}
               buttonTitle={"предоставить"}
               imgSrc={"/assets/locations.svg"}
@@ -128,7 +147,7 @@ const App: React.FC = () => {
           <IonSlide>
             <SlideContent
               title={"Не надо регистрироваться"}
-              onClick={handleButtonClick}
+              onClick={getPhone}
               description={"Нужно всего лишь предоставить доступ к номеру"}
               buttonTitle={"предоставить"}
               imgSrc={"/assets/person.svg"}
