@@ -89,6 +89,16 @@ const App: React.FC = () => {
     }
   }
 
+  async function share(){
+    if (aituBridge.isSupported()) {
+      try {
+        const data = await aituBridge.share('https://docs.aitu.io/');
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  }
+
   async function getPhone() {
     if (aituBridge.isSupported()) {
       try {
@@ -156,7 +166,7 @@ const App: React.FC = () => {
           <IonSlide>
             <SlideContent
               title={"Делитесь с друзьями"}
-              onClick={handleButtonClick}
+              onClick={share}
               description={"Для тех кто любит делиться"}
               buttonTitle={"поделиться"}
               imgSrc={"/assets/share.svg"}
