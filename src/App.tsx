@@ -52,7 +52,7 @@ const SlideContent: React.FC<ISlideContentProps> = ({
   imgSrc,
 }) => {
   return (
-    <div className={'app-slide-content'}>
+    <div className={"app-slide-content"}>
       <div className={"app-title"}>
         <IonCardTitle>Удобно для пользователя</IonCardTitle>
       </div>
@@ -190,55 +190,83 @@ const App: React.FC = () => {
           message={phone}
           buttons={["Ясно"]}
         />
-            <IonSlides
-              onIonSlideWillChange={(s) => {
-                console.log(s);
-              }}
-              pager={true}
-              options={slideOpts}
-              ref={slider}
-            >
-              <IonSlide>
-                <FirstSlideContent
-                  title={`Привет, ${name}`}
-                  description={
-                    "Расскажем, что это и как использовать aitu.apps для своего бизнеса"
-                  }
-                  buttonTitle={"Я Готов!"}
-                  imgSrc={"/assets/slide1.png"}
-                  onClick={() => slider.current?.slideNext()}
-                ></FirstSlideContent>
-              </IonSlide>
-              <IonSlide>
-                <SlideContent
-                  title={`Не надо вводить адрес`}
-                  onClick={getGeo}
-                  description={
-                    "Нужно всего лишь предоставить доступ к геолокации"
-                  }
-                  buttonTitle={"предоставить"}
-                  imgSrc={"/assets/locations.svg"}
-                ></SlideContent>
-              </IonSlide>
-              <IonSlide>
-                <SlideContent
-                  title={"Не надо регистрироваться"}
-                  onClick={getPhone}
-                  description={"Нужно всего лишь предоставить доступ к номеру"}
-                  buttonTitle={"предоставить"}
-                  imgSrc={"/assets/person.svg"}
-                ></SlideContent>
-              </IonSlide>
-              <IonSlide>
-                <SlideContent
-                  title={"Делитесь с друзьями"}
-                  onClick={share}
-                  description={"Для тех кто любит делиться"}
-                  buttonTitle={"поделиться"}
-                  imgSrc={"/assets/share.svg"}
-                ></SlideContent>
-              </IonSlide>
-            </IonSlides>
+        <IonSlides
+          pager={true}
+          options={slideOpts}
+          ref={slider}
+        >
+          <IonSlide>
+            <FirstSlideContent
+              title={`Привет, ${name}`}
+              description={
+                "Расскажем, что это и как использовать aitu.apps для своего бизнеса"
+              }
+              buttonTitle={"Я Готов!"}
+              imgSrc={"/assets/slide1.png"}
+              onClick={() => slider.current?.slideNext()}
+            ></FirstSlideContent>
+          </IonSlide>
+          <IonSlide>
+            <FirstSlideContent
+                title={"+800.000 пользователей Aitu"}
+                onClick={handleButtonClick}
+                description={
+                  "Могут увидеть ваше мини-приложение и стать его пользователями"
+                }
+                buttonTitle={"Интересно"}
+                imgSrc={"/assets/slide2.png"}
+            ></FirstSlideContent>
+          </IonSlide>
+          <IonSlide>
+            <FirstSlideContent
+                title={"Всегда под рукой "}
+                onClick={handleButtonClick}
+                description={
+                  "Каталог с мини-приложениями находится на центральной вкладке. Пользователи легко его найдут"
+                }
+                buttonTitle={"Что ещё?"}
+                imgSrc={"/assets/slide3.png"}
+            ></FirstSlideContent>
+          </IonSlide>
+          <IonSlide>
+            <FirstSlideContent
+                title={"Баннер с ваши предложением"}
+                onClick={handleButtonClick}
+                description={
+                  "         Уникальная скидка, спецпредложение или акция. Донесите ценное предложение до всех пользователей Aitu"
+                }
+                buttonTitle={"Далее"}
+                imgSrc={"/assets/slide4.png"}
+            ></FirstSlideContent>
+          </IonSlide>
+          <IonSlide>
+            <SlideContent
+              title={`Не надо вводить адрес`}
+              onClick={getGeo}
+              description={"Нужно всего лишь предоставить доступ к геолокации"}
+              buttonTitle={"предоставить"}
+              imgSrc={"/assets/locations.svg"}
+            ></SlideContent>
+          </IonSlide>
+          <IonSlide>
+            <SlideContent
+              title={"Не надо регистрироваться"}
+              onClick={getPhone}
+              description={"Нужно всего лишь предоставить доступ к номеру"}
+              buttonTitle={"предоставить"}
+              imgSrc={"/assets/person.svg"}
+            ></SlideContent>
+          </IonSlide>
+          <IonSlide>
+            <SlideContent
+              title={"Делитесь с друзьями"}
+              onClick={share}
+              description={"Для тех кто любит делиться"}
+              buttonTitle={"поделиться"}
+              imgSrc={"/assets/share.svg"}
+            ></SlideContent>
+          </IonSlide>
+        </IonSlides>
       </IonContent>
     </IonApp>
   );
